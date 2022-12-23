@@ -1,9 +1,12 @@
+import { Loading } from "@components/Loading";
 import {
   Roboto_400Regular,
   Roboto_700Bold,
   useFonts,
 } from "@expo-google-fonts/roboto";
-import { Text, View, StatusBar } from "react-native";
+import { THEME } from "@theme/index";
+import { NativeBaseProvider } from "native-base";
+import { StatusBar, View } from "react-native";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -11,30 +14,13 @@ export default function App() {
     Roboto_700Bold,
   });
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#121214",
-      }}
-    >
+    <NativeBaseProvider theme={THEME}>
       <StatusBar
         barStyle="light-content"
         backgroundColor="transparent"
         translucent
       />
-      {fontsLoaded ? (
-        <Text
-          style={{
-            color: "#FFF",
-          }}
-        >
-          Hello Ignite Gym
-        </Text>
-      ) : (
-        <View />
-      )}
-    </View>
+      {fontsLoaded ? <View /> : <Loading />}
+    </NativeBaseProvider>
   );
 }
