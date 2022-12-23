@@ -3,8 +3,7 @@ import {
   Roboto_700Bold,
   useFonts,
 } from "@expo-google-fonts/roboto";
-import { StatusBar } from "expo-status-bar";
-import { Text, View } from "react-native";
+import { Text, View, StatusBar } from "react-native";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -12,9 +11,30 @@ export default function App() {
     Roboto_700Bold,
   });
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <StatusBar style="auto" />
-      {fontsLoaded ? <Text>Hello Ignite Gym</Text> : <View />}
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#121214",
+      }}
+    >
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
+      {fontsLoaded ? (
+        <Text
+          style={{
+            color: "#FFF",
+          }}
+        >
+          Hello Ignite Gym
+        </Text>
+      ) : (
+        <View />
+      )}
     </View>
   );
 }
