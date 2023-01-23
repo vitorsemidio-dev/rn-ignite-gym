@@ -5,6 +5,7 @@ import {
   useFonts,
 } from "@expo-google-fonts/roboto";
 import { SignIn } from "@screens/SignIn";
+import { SignUp } from "@screens/SignUp";
 import { THEME } from "@theme/index";
 import { NativeBaseProvider } from "native-base";
 import { StatusBar } from "react-native";
@@ -21,7 +22,7 @@ export default function App() {
         backgroundColor="transparent"
         translucent
       />
-      {fontsLoaded ? <SignIn /> : <Loading />}
+      {fontsLoaded ? <SignUp /> : <Loading />}
     </NativeBaseProvider>
   );
 }
