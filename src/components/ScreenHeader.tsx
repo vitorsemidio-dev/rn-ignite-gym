@@ -1,4 +1,5 @@
-import { Center, Heading } from "native-base";
+import { Heading } from "@components/Heading";
+import { Center } from "native-base";
 
 type Props = {
   title: string;

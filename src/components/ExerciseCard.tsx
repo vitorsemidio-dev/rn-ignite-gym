@@ -1,5 +1,6 @@
+import { Heading } from "@components/Heading";
 import { Entypo } from "@expo/vector-icons";
-import { Heading, HStack, Icon, Image, Text, VStack } from "native-base";
+import { HStack, Icon, Image, Text, VStack } from "native-base";
 import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 
 type Props = TouchableOpacityProps;

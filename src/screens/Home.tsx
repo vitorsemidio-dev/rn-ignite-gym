@@ -1,7 +1,8 @@
 import { ExerciseCard } from "@components/ExerciseCard";
 import { Group } from "@components/Group";
+import { Heading } from "@components/Heading";
 import { HomeHeader } from "@components/HomeHeader";
-import { FlatList, Heading, HStack, Text, VStack } from "native-base";
+import { FlatList, HStack, Text, VStack } from "native-base";
 import { useState } from "react";
 
 export function Home() {
