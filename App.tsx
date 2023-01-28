@@ -1,5 +1,5 @@
 import { Loading } from "@components/Loading";
-import { AuthContext } from "@contexts/AuthContext";
+import { AuthContextProvider } from "@contexts/AuthContext";
 import {
   Roboto_400Regular,
   Roboto_700Bold,
@@ -22,16 +22,9 @@ export default function App() {
         backgroundColor="transparent"
         translucent
       />
-      <AuthContext.Provider
-        value={{
-          id: "1",
-          name: "Jane Doe",
-          email: "johndoe@email.com",
-          avatar: "johndoe.png",
-        }}
-      >
+      <AuthContextProvider>
         {fontsLoaded ? <Routes /> : <Loading />}
-      </AuthContext.Provider>
+      </AuthContextProvider>
     </NativeBaseProvider>
   );
 }
