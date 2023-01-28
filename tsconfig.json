@@ -8,7 +8,7 @@
       "@components/*": ["./src/components/*"],
       "@config/*": ["./src/config/*"],
       "@constants/*": ["./src/constants/*"],
-      "@context/*": ["./src/context/*"],
+      "@contexts/*": ["./src/contexts/*"],
       "@dtos/*": ["./src/dtos/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@models/*": ["./src/models/*"],
