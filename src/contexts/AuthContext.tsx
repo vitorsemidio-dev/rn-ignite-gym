@@ -1,5 +1,6 @@
 import { UserDTO } from "@dtos/UserDTO";
 import { api } from "@services/api";
+import { storageAuthTokenSave } from "@storage/storageAuthToken";
 import {
   storageUserGet,
   storageUserRemove,
@@ -53,9 +54,10 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         password,
       });
 
-      if (data.user) {
+      if (data.user && data.token) {
         setUser(data.user);
         await storageUserSave(data.user);
+        await storageAuthTokenSave(data.token);
       }
     } catch (error) {
       throw error;
