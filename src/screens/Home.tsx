@@ -2,21 +2,17 @@ import { ExerciseCard } from "@components/ExerciseCard";
 import { Group } from "@components/Group";
 import { Heading } from "@components/Heading";
 import { HomeHeader } from "@components/HomeHeader";
-import { useNavigation } from "@react-navigation/native";
+import { ExerciseDTO } from "@dtos/ExerciseDTO";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "@routes/app.routes";
 import { api } from "@services/api";
 import { AppError } from "@utils/AppError";
 import { FlatList, HStack, Text, useToast, VStack } from "native-base";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function Home() {
   const toast = useToast();
-  const [exercises, setExercises] = useState<string[]>([
-    "Puxada frontal",
-    "Remada curvada",
-    "Remada unilateral",
-    "Levantamento terra",
-  ]);
+  const [exercises, setExercises] = useState<ExerciseDTO[]>([]);
   const [groups, setGroups] = useState<string[]>([]);
   const [groupSelected, setGroupSelected] = useState<string>("");
 
@@ -24,7 +20,7 @@ export function Home() {
 
   async function fetchGroups() {
     try {
-      const response = await api.get("/groups");
+      const response = await api.get<string[]>("/groups");
       setGroups(response.data);
     } catch (error) {
       const isAppError = error instanceof AppError;
@@ -40,9 +36,35 @@ export function Home() {
     }
   }
 
+  async function fecthExercisesByGroup() {
+    try {
+      const response = await api.get<ExerciseDTO[]>(
+        `/exercises/bygroup/${groupSelected}`
+      );
+      setExercises(response.data);
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : "Não foi possível carregar os exercícios";
+
+      toast.show({
+        title,
+        placement: "top",
+        bgColor: "red.500",
+      });
+    }
+  }
+
   useEffect(() => {
     fetchGroups();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fecthExercisesByGroup();
+    }, [groupSelected])
+  );
 
   useEffect(() => {
     if (groups.length > 0) {
@@ -90,9 +112,9 @@ export function Home() {
 
         <FlatList
           data={exercises}
-          keyExtractor={(item) => item}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <ExerciseCard onPress={handleOpenExerciseDetails} />
+            <ExerciseCard data={item} onPress={handleOpenExerciseDetails} />
           )}
           showsVerticalScrollIndicator={false}
           _contentContainerStyle={{
