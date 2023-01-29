@@ -4,6 +4,7 @@ import { Button } from "@components/Button";
 import { Heading } from "@components/Heading";
 import { Input } from "@components/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAuth } from "@hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
 import { api } from "@services/api";
 import { AppError } from "@utils/AppError";
@@ -32,6 +33,7 @@ const signUpSchema = yup.object({
 });
 
 export function SignUp() {
+  const { singIn } = useAuth();
   const {
     control,
     handleSubmit,
@@ -48,12 +50,12 @@ export function SignUp() {
 
   async function handleSignUp({ name, email, password }: FormDataProps) {
     try {
-      const response = await api.post("/users", {
+      await api.post("/users", {
         name,
         email,
         password,
       });
-      console.log(response.data);
+      await singIn(email, password);
     } catch (error) {
       const isAppError = error instanceof AppError;
       const title = isAppError
