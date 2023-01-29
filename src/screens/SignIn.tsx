@@ -4,9 +4,11 @@ import { Button } from "@components/Button";
 import { Heading } from "@components/Heading";
 import { Input } from "@components/Input";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAuth } from "@hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
-import { Center, Image, ScrollView, Text, VStack } from "native-base";
+import { AppError } from "@utils/AppError";
+import { Center, Image, ScrollView, Text, useToast, VStack } from "native-base";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -24,17 +26,33 @@ const signUpSchema = yup.object({
 });
 
 export function SignIn() {
+  const { singIn } = useAuth();
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormDataProps>({
     resolver: yupResolver(signUpSchema),
   });
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
+  const toast = useToast();
 
-  function handleSignIn(data: FormDataProps) {
-    console.log(data);
+  async function handleSignIn({ email, password }: FormDataProps) {
+    try {
+      await singIn(email, password);
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+
+      const title = isAppError
+        ? error.message
+        : "Não foi possível entrar. Tente novamente mais tarde.";
+
+      toast.show({
+        title,
+        placement: "top",
+        bgColor: "red.500",
+      });
+    }
   }
 
   function handleSignUp() {
@@ -97,7 +115,11 @@ export function SignIn() {
             )}
           />
 
-          <Button title="Acessar" onPress={handleSubmit(handleSignIn)} />
+          <Button
+            title="Acessar"
+            onPress={handleSubmit(handleSignIn)}
+            isLoading={isSubmitting}
+          />
         </Center>
 
         <Center mt="24">
