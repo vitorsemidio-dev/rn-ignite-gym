@@ -70,7 +70,7 @@ export function Home() {
           )}
           showsVerticalScrollIndicator={false}
           _contentContainerStyle={{
-            mb: 20,
+            paddingBottom: 320,
           }}
         />
       </VStack>
