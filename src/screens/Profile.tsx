@@ -1,3 +1,4 @@
+import defaulUserPhotoImg from "@assets/userPhotoDefault.png";
 import { Button } from "@components/Button";
 import { Heading } from "@components/Heading";
 import { Input } from "@components/Input";
@@ -69,9 +70,6 @@ export function Profile() {
   });
   const [isUpdating, setIsUpdating] = useState(false);
   const [photoIsLoading, setPhotoIsLoading] = useState(false);
-  const [userPhoto, setUserPhoto] = useState(
-    "https://github.com/vitorsemidio-dev.png"
-  );
   const toast = useToast();
 
   async function handleUserPhotoSelected() {
@@ -106,8 +104,6 @@ export function Profile() {
           });
         }
 
-        setUserPhoto(photoAssetSelected.uri);
-
         const fileExtension = photoAssetSelected.uri.split(".").pop();
         const photoFile = {
           name: `${user.name}.${fileExtension}`.toLowerCase(),
@@ -117,11 +113,19 @@ export function Profile() {
         const userPhotoUploadForm = new FormData();
         userPhotoUploadForm.append("avatar", photoFile);
 
-        await api.patch("/users/avatar", userPhotoUploadForm, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const avatarUpdtedResponse = await api.patch(
+          "/users/avatar",
+          userPhotoUploadForm,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        const userUpdated = user;
+        userUpdated.avatar = avatarUpdtedResponse.data.avatar;
+        await updateUserProfile(userUpdated);
 
         toast.show({
           title: "Foto atualizada!",
@@ -129,8 +133,17 @@ export function Profile() {
           bgColor: "green.500",
         });
       }
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : "Não foi possível atualizar o avatar. Tente novamente mais tarde.";
+
+      toast.show({
+        title,
+        placement: "top",
+        bgColor: "red.500",
+      });
     } finally {
       setPhotoIsLoading(false);
     }
@@ -186,7 +199,11 @@ export function Profile() {
             ></Skeleton>
           ) : (
             <UserPhoto
-              source={{ uri: userPhoto }}
+              source={
+                user.avatar
+                  ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}` }
+                  : defaulUserPhotoImg
+              }
               alt="Avatar usuário logado"
               size={PHOTO_SIZE}
             />
