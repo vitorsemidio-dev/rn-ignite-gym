@@ -92,11 +92,10 @@ export function Profile() {
         return;
       }
 
-      if (photoSelected.assets[0].uri) {
-        const photoInfo = await FileSystem.getInfoAsync(
-          photoSelected.assets[0].uri
-        );
+      const photoAssetSelected = photoSelected.assets[0];
 
+      if (photoAssetSelected.uri) {
+        const photoInfo = await FileSystem.getInfoAsync(photoAssetSelected.uri);
         const MAX_SIZE_MB = 5;
 
         if (photoInfo.size && photoInfo.size / 1024 / 1024 > MAX_SIZE_MB) {
@@ -107,7 +106,28 @@ export function Profile() {
           });
         }
 
-        setUserPhoto(photoSelected.assets[0].uri);
+        setUserPhoto(photoAssetSelected.uri);
+
+        const fileExtension = photoAssetSelected.uri.split(".").pop();
+        const photoFile = {
+          name: `${user.name}.${fileExtension}`.toLowerCase(),
+          uri: photoAssetSelected.uri,
+          type: `${photoAssetSelected.type}/${fileExtension}`,
+        } as any;
+        const userPhotoUploadForm = new FormData();
+        userPhotoUploadForm.append("avatar", photoFile);
+
+        await api.patch("/users/avatar", userPhotoUploadForm, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        toast.show({
+          title: "Foto atualizada!",
+          placement: "top",
+          bgColor: "green.500",
+        });
       }
     } catch (err) {
       console.log(err);
@@ -266,6 +286,7 @@ export function Profile() {
             title="Atualizar"
             mt={4}
             onPress={handleSubmit(handleProfileUpdate)}
+            isLoading={isUpdating}
           />
         </Center>
       </ScrollView>
