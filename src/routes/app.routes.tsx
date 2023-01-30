@@ -13,10 +13,12 @@ import { useTheme } from "native-base";
 import { Platform } from "react-native";
 
 type AppRoutes = {
-  home: undefined;
+  exercise: {
+    exerciseId: string;
+  };
   history: undefined;
+  home: undefined;
   profile: undefined;
-  exercise: undefined;
 };
 
 export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;

@@ -20,24 +20,6 @@ export function Home() {
 
   const navigation = useNavigation<AppNavigatorRoutesProps>();
 
-  async function fetchGroups() {
-    try {
-      const response = await api.get<string[]>("/groups");
-      setGroups(response.data);
-    } catch (error) {
-      const isAppError = error instanceof AppError;
-      const title = isAppError
-        ? error.message
-        : "Não foi possível carregar os grupos musculares";
-
-      toast.show({
-        title,
-        placement: "top",
-        bgColor: "red.500",
-      });
-    }
-  }
-
   async function fecthExercisesByGroup() {
     try {
       setIsLoadingExercise(true);
@@ -61,6 +43,28 @@ export function Home() {
     }
   }
 
+  async function fetchGroups() {
+    try {
+      const response = await api.get<string[]>("/groups");
+      setGroups(response.data);
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : "Não foi possível carregar os grupos musculares";
+
+      toast.show({
+        title,
+        placement: "top",
+        bgColor: "red.500",
+      });
+    }
+  }
+
+  function handleOpenExerciseDetails(exerciseId: string) {
+    navigation.navigate("exercise", { exerciseId });
+  }
+
   useEffect(() => {
     fetchGroups();
   }, []);
@@ -76,10 +80,6 @@ export function Home() {
       setGroupSelected(groups[0]);
     }
   }, [groups]);
-
-  function handleOpenExerciseDetails() {
-    navigation.navigate("exercise");
-  }
 
   return (
     <VStack flex={1}>
@@ -122,7 +122,10 @@ export function Home() {
             data={exercises}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <ExerciseCard data={item} onPress={handleOpenExerciseDetails} />
+              <ExerciseCard
+                data={item}
+                onPress={() => handleOpenExerciseDetails(item.id)}
+              />
             )}
             showsVerticalScrollIndicator={false}
             _contentContainerStyle={{
