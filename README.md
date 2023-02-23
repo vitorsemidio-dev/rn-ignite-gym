@@ -5,13 +5,13 @@
 </h1>
 
 <p align="center">
-<img src="https://img.shields.io/static/v1?logo=AndroidStudio&logoColor=3DDC84&label=AndroidStudio&message=Android Studio&color=3DDC84" alt="Logo AndroidStudio cor correta com hex #3DDC84" />
+<img src="https://img.shields.io/static/v1?logo=AndroidStudio&logoColor=3DDC84&label=AndroidStudio&message=Android%20Studio&color=3DDC84" alt="Logo AndroidStudio cor correta com hex #3DDC84" />
 
 <img src="https://img.shields.io/static/v1?logo=Axios&logoColor=5A29E4&label=Axios&message=Axios&color=5A29E4" alt="Logo Axios cor correta com hex #5A29E4" />
 
 <img src="https://img.shields.io/static/v1?logo=Expo&logoColor=000020&label=Expo&message=Expo&color=000020" alt="Logo Expo cor correta com hex #000020" />
 
-<img src="https://img.shields.io/static/v1?logo=ReactHookForm&logoColor=EC5990&label=ReactHookForm&message=React Hook Form&color=EC5990" alt="Logo ReactHookForm cor correta com hex #EC5990" />
+<img src="https://img.shields.io/static/v1?logo=ReactHookForm&logoColor=EC5990&label=ReactHookForm&message=React%20Hook%20Form&color=EC5990" alt="Logo ReactHookForm cor correta com hex #EC5990" />
 
 <img src="https://img.shields.io/static/v1?logo=TypeScript&logoColor=3178C6&label=TypeScript&message=TypeScript&color=3178C6" alt="Logo TypeScript cor correta com hex #3178C6" />
 </p>
