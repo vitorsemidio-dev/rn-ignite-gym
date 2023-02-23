@@ -1,3 +1,4 @@
+import { env } from "@environments/env";
 import {
   storageAuthTokenGet,
   storageAuthTokenSave,
@@ -27,7 +28,7 @@ type APIInstanceProps = AxiosInstance & {
 };
 
 const api = axios.create({
-  baseURL: "http://192.168.11.11:3333",
+  baseURL: env.apiUrl,
 }) as APIInstanceProps;
 
 let isRefreshing = false;
